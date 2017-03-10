@@ -3,10 +3,14 @@ import java.util.*;
 import java.io.*;
 import java.awt.Point;
 
-public class MapNode {
+public class MapNode implements Comparable<MapNode>{
 	
 	int numNeighbors, x, y, id;
-	Set edges = new HashSet<MapEdge>();
+	double fVal, gVal, hVal;
+	boolean isCity;
+	//Set successors = new HashSet<MapNode>();
+	//Set edges = new HashSet<MapEdge>();
+	MapNode parent;
 	
 	public MapNode(int id, int x, int y) throws Exception {
 		//numNeighbors = N;
@@ -22,9 +26,68 @@ public class MapNode {
 	}
 	
 	public boolean setLocation(int x, int y) {
-		this.x = x;
-		this.y = y;
+		try {
+			this.x = x;
+			this.y = y;
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Could not set location");
+			return false;
+		}
 		return true;
 	}
-
+	
+	public boolean setG(double g) {
+		try {
+			this.gVal = g;
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Could not set g value");
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean setParent(MapNode parent) {
+		try {
+			this.parent = parent;
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Could not set parent");
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean setF(double f) {
+		try {
+			this.fVal = f;
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Could not set f value");
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean setH(double h) {
+		try {
+			this.hVal = h;
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Could not set h value");
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public int compareTo(MapNode o){
+		if (fVal > o.fVal)
+			return 1;
+		else if (fVal < o.fVal)
+			return -1;
+		else
+			return 0;
+	}
 }

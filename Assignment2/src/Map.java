@@ -6,16 +6,16 @@ public class Map {
 	
 	int length, width, cityNum;
 	double[][] edgeLengths = new double[100][100]; //keeps track of edge lengths- mapped by node IDs
-	
+	MapNode start;
 	MapNode[] cities = new MapNode[100];
 			
 	public Map (int length, int width, String textfile) { //throws Exception {
 		
 		this.length = length;
 		this.width = width;
-		
 		//System.out.println("Added lengths and widths");
 		buildEdgelengths(textfile);
+		start = cities[0];
 		
 	}
 	
@@ -26,6 +26,7 @@ public class Map {
 		for (int i = 0; i < cities.length; i++) {
 			try {
 				cities[i] = new MapNode(0,0,0);
+				cities[i].isCity = false;
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -48,6 +49,7 @@ public class Map {
 						x = Integer.parseInt(ln[1]);
 						y = Integer.parseInt(ln[2]);
 						cities[cID].setLocation(x,y);
+						cities[cID].isCity = true;
 					}
 					lineCount++;
 				}
@@ -75,6 +77,13 @@ public class Map {
 					//System.out.println("Edge length of "+i+" and "+j+" is "+distance);
 					edgeLengths[j][i] = distance;
 				}
+			}
+			
+			for (int i = 0; i < cityNum; i++) {
+				for (int j = 0; j < cityNum; j++) {
+					System.out.print(edgeLengths[i][j]+"  ");
+				}
+				System.out.println();
 			}
 			
 			return true;

@@ -15,27 +15,31 @@ public class TravelingSalesman {
 		System.out.println("Generate city files? (y/n): ");
 		
 		s = scanner.nextLine();
-		System.out.println(s);
-		//fileGen(4,10);
-		
 		if (s.equals("y")) {
 			fileGen(25,10);
 			fileGen(25,25);
 			fileGen(25,50);
 			fileGen(25,100);
 		}
-		//fileGen(0,10);
+		
+		Map cityMap = null;
 				
 		try {
 			System.out.println("Enter a filename");
 			String file = scanner.nextLine();
-			Map cityMap = new Map(101, 101, file);
+			cityMap = new Map(101, 101, file);
 		} catch (Exception e){
-			System.out.println("Error building map");
+			System.out.println("Could not set up Map");
 			System.out.println(e);
 		}
-		
-		
+
+		try {
+			AStarTSP aStar = new AStarTSP(cityMap);
+			aStar.run();
+		} catch (Exception e) {
+			System.out.println("Could not run A*");
+			System.out.println(e);
+		}
 		
 	}
 
