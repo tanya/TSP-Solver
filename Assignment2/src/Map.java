@@ -31,10 +31,6 @@ public class Map {
 			}
 		}
 		
-		for (int i = 0; i < cities.length; i++) {
-			System.out.println(cities[i].id);
-		}
-		
 		//add nodes to an array which will be traversed to calculate edge lengths
 			try (BufferedReader fr = new BufferedReader(new FileReader (textfile))){
 				int lineCount = 0;
