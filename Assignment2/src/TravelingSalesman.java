@@ -9,17 +9,30 @@ public class TravelingSalesman {
 	
 	public static void main (String[] args) {
 		String s = "";
+		int len, wid;
+		
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Generate city files? (y/n): ");
 		
 		s = scanner.nextLine();
 		
-		if (s == "y") {
+		/*if (s == "y") {
 			fileGen(25,10);
 			fileGen(25,25);
 			fileGen(25,50);
 			fileGen(25,100);
-		}
+		}*/
+		fileGen(0,10);
+				
+		//try {
+			System.out.println("Enter a filename");
+			String file = scanner.nextLine();
+			Map cityMap = new Map(101, 101, file);
+		//} catch (Exception e){
+			System.out.println("Error building map");
+		//}
+		
+		
 		
 	}
 
@@ -31,7 +44,12 @@ public class TravelingSalesman {
 		
 		for(int i = 0; i < fileNum; i++) {
 			try{
-			    PrintWriter writer = new PrintWriter(fileNo+".txt", "UTF-8");
+				File file = new File("/Users/tanya/Programming/Classes/AI_Assignment2/Assignment2/src/"+fileNo+".txt");
+				System.out.println("Created file");
+				file.getParentFile().mkdirs();
+			    PrintWriter writer = new PrintWriter(file);
+			    System.out.println("created writer?");
+			    writer.println(cityNum);
 			    for(int j = 0; j < cityNum; j++) {
 			    	int x = r.nextInt(101);
 					int y = r.nextInt(101);
@@ -49,4 +67,6 @@ public class TravelingSalesman {
 		
 		System.out.println("Success");
 	}
+	
+	
 }
