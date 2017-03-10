@@ -13,8 +13,11 @@ public class TravelingSalesman {
 		System.out.println("Generate city files? (y/n): ");
 		
 		s = scanner.nextLine();
+		System.out.println(s);
+		//fileGen(4,10);
 		
-		if (s == "y") {
+		if (s.equals("y")) {
+			System.out.println("Hello?");
 			fileGen(25,10);
 			fileGen(25,25);
 			fileGen(25,50);
