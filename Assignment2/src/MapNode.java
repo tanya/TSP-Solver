@@ -7,7 +7,7 @@ public class MapNode implements Comparable<MapNode>{
 	
 	int numNeighbors, x, y, id;
 	double fVal, gVal, hVal;
-	boolean isCity;
+	boolean isCity, isVisited;
 	//Set successors = new HashSet<MapNode>();
 	//Set edges = new HashSet<MapEdge>();
 	MapNode parent;
@@ -15,6 +15,7 @@ public class MapNode implements Comparable<MapNode>{
 	public MapNode(int id, int x, int y) throws Exception {
 		//numNeighbors = N;
 		this.id = id;
+		this.isVisited = false;
 		this.x = x;
 		this.y = y;
 	}

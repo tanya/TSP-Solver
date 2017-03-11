@@ -50,6 +50,7 @@ public class Map {
 						y = Integer.parseInt(ln[2]);
 						cities[cID].setLocation(x,y);
 						cities[cID].isCity = true;
+						cities[cID].id = cID;
 					}
 					lineCount++;
 				}
@@ -73,6 +74,7 @@ public class Map {
 					MapNode cur2 = cities[j];
 					//System.out.println(i + " " + j);
 					double distance = cur.calculateDistance(cur, cur2);
+					cur.setH(distance);
 					edgeLengths[i][j] = distance;
 					//System.out.println("Edge length of "+i+" and "+j+" is "+distance);
 					edgeLengths[j][i] = distance;
