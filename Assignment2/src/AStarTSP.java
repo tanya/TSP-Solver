@@ -10,11 +10,13 @@ public class AStarTSP {
 	MapNode[] cities;
 	Map cityMap;
 	double g;
+	double totalCost;
 	PriorityQueue<MapNode> fringe = new PriorityQueue<MapNode>(); // heap for min cost
 	Set<MapNode> fringeSet = new HashSet<MapNode>(); //faster lookup
 	Set<MapNode> closed = new HashSet<MapNode>();
 	
 	public AStarTSP(Map cityMap) {
+		totalCost = 0;
 		this.cityMap = cityMap;
 		cities = cityMap.cities;
 		start = cities[0];
@@ -47,6 +49,8 @@ public class AStarTSP {
 			}
 			//closed.add(cur);
 			cur.isVisited = true;
+			//totalCost += cur.gVal;
+			
 			for (MapNode curPrime : cities) {
 				if (curPrime.isCity == false) { //past the city list in cities, break
 					break;
@@ -59,6 +63,7 @@ public class AStarTSP {
 						curPrime.setG(Double.POSITIVE_INFINITY); 
 						curPrime.setParent(null);
 					}
+					
 					updateVertex(cur, curPrime);					
 				}	
 			}
@@ -99,7 +104,7 @@ public class AStarTSP {
 		}
 		sPrime.setG(g(s,sPrime));
 		System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
-		sPrime.setF(s.gVal + h(sPrime));
+		sPrime.setF(sPrime.gVal + h(sPrime));
 		sPrime.setParent(s);
 		System.out.println("Set "+sPrime.id+"'s fVal to "+sPrime.fVal);
 		System.out.println(s.id + " is the parent of "+sPrime.id);
@@ -107,6 +112,7 @@ public class AStarTSP {
 	}
 	public double g(MapNode n, MapNode nPrime) {
 		double dist = n.gVal + cityMap.edgeLengths[n.id][nPrime.id];
+		System.out.println("Added previous gVal "+n.gVal+"to new cost, "+cityMap.edgeLengths[n.id][nPrime.id]);
 		return dist;
 	}
 	
@@ -115,12 +121,12 @@ public class AStarTSP {
 	}
 	
 	public void solution(MapNode current){		
-		//System.out.print(currentPoint);
 		System.out.println("SOLUTION: ");
 		int n = 0;
 		while(current.parent != start){
 			//grid[currentPoint.x][currentPoint.y].setSolution(true);
 			n++;
+			totalCost += cityMap.edgeLengths[current.id][current.parent.id];
 			System.out.println(current.id);
 			current = current.parent;
 			
@@ -129,8 +135,11 @@ public class AStarTSP {
 		
 		if(current.parent == start) {
 			System.out.println(current.id);
-			System.out.println("Parent is start");
+			totalCost += cityMap.edgeLengths[current.id][start.id];
+			//System.out.println("Parent is start");
 		}
+		
+		System.out.println("Total cost of path: "+totalCost);
 		//grid[currentPoint.x][currentPoint.y].setSolution(true);
 		//grid[start.x][start.y].setSolution(true);
 		//System.out.println();

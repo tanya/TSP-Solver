@@ -32,14 +32,37 @@ public class TravelingSalesman {
 			System.out.println("Could not set up Map");
 			System.out.println(e);
 		}
-
-		try {
-			AStarTSP aStar = new AStarTSP(cityMap);
-			aStar.run();
-		} catch (Exception e) {
-			System.out.println("Could not run A*");
-			System.out.println(e);
+		
+		System.out.println("A* (1) or Simulated Annealing (2)?");
+		
+		s = scanner.nextLine();
+		
+		if(s.equals("1")) {
+			try {
+				AStarTSP aStar = new AStarTSP(cityMap);
+				aStar.run();
+			} catch (Exception e) {
+				System.out.println("Could not run A*");
+				System.out.println(e);
+			}
+		} else if (s.equals("2")) {
+			/*System.out.println("Enter an integer value for T: "); //input for T and Beta
+			int i = scanner.nextInt();
+			System.out.println("Enter a value between 0 and 1 for Beta: ");
+			double j = scanner.nextDouble();
+			if (j >= 1 | j < 0) {
+				System.out.println("invalid value for j. I'll use 0.999 instead.");
+			}*/
+			try {
+				SimulatedAnnealingTSP saTSP = new SimulatedAnnealingTSP(cityMap, 5, 0.999);
+				saTSP.run();
+				//SANode state = new SANode(cityMap);
+			} catch (Exception e) {
+				System.out.println("Could not work with SANode");
+				System.out.println(e);
+			}
 		}
+		
 		
 	}
 
