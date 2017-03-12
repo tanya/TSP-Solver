@@ -6,7 +6,7 @@ import java.awt.Point;
 public class MapNode implements Comparable<MapNode>{
 	
 	int numNeighbors, x, y, id;
-	double fVal, gVal, hVal;
+	double fVal, gVal, hVal, prevG;
 	boolean isCity, isVisited;
 	//Set successors = new HashSet<MapNode>();
 	//Set edges = new HashSet<MapEdge>();
@@ -16,6 +16,7 @@ public class MapNode implements Comparable<MapNode>{
 		//numNeighbors = N;
 		this.id = id;
 		this.isVisited = false;
+		prevG = 0;
 		this.x = x;
 		this.y = y;
 	}

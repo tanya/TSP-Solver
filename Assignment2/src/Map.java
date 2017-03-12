@@ -38,9 +38,9 @@ public class Map {
 				System.out.println("Found file");
 				for (String line = fr.readLine(); line != null; line = fr.readLine()) {
 					if (lineCount == 0) {
-						System.out.println("Line is "+line);
+						//System.out.println("Line is "+line);
 						cityNum = Integer.parseInt(line);
-						System.out.println("Number of cities: "+cityNum);
+						//System.out.println("Number of cities: "+cityNum);
 					} else {	
 						System.out.println(line);
 						String[] ln = line.split(" ");
@@ -81,12 +81,12 @@ public class Map {
 				}
 			}
 			
-			for (int i = 0; i < cityNum; i++) {
+			/*for (int i = 0; i < cityNum; i++) {
 				for (int j = 0; j < cityNum; j++) {
 					System.out.print(edgeLengths[i][j]+"  ");
 				}
 				System.out.println();
-			}
+			}*/
 			
 			return true;
 	}

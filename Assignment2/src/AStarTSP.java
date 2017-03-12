@@ -9,7 +9,7 @@ public class AStarTSP {
 	double[][] edgeLengths;
 	MapNode[] cities;
 	Map cityMap;
-	double g;
+	double g; //cost so far
 	double totalCost;
 	PriorityQueue<MapNode> fringe = new PriorityQueue<MapNode>(); // heap for min cost
 	Set<MapNode> fringeSet = new HashSet<MapNode>(); //faster lookup
@@ -28,6 +28,7 @@ public class AStarTSP {
 		Runtime runtime = Runtime.getRuntime();
 		
 		start.setG(0);
+		g = start.gVal;
 		start.setH(h(start) + start.gVal);
 		start.setF(start.gVal + start.hVal);
 
@@ -39,9 +40,14 @@ public class AStarTSP {
 		while (!fringe.isEmpty()) {
 			
 			cur = fringe.poll();
+			if (cur != start) {
+				g += cityMap.edgeLengths[cur.parent.id][cur.id];
+				System.out.println("COST SO FAR: "+g);
+			}
+			
 			System.out.print("FRINGE: ");
 			printFringe();
-			System.out.println("Removed node "+cur.id+" from fringe; its distance is "+cur.fVal);
+			System.out.println("Removed node "+cur.id+" from fringe; its fVal is "+cur.fVal+"and its gVal is "+cur.gVal);
 			fringeSet.remove(cur);
 			if (closed.size() == cityMap.cityNum) {
 				System.out.println("Visited all cities");
@@ -61,7 +67,8 @@ public class AStarTSP {
 				if (!curPrime.isVisited) { //(!closed.contains(curPrime)) { //if curPrime not expanded yet
 					if (!fringe.contains(curPrime)) { //if curPrime not generated yet
 						curPrime.setG(Double.POSITIVE_INFINITY); 
-						curPrime.setParent(null);
+						curPrime.setParent(cur);
+						//curPrime.setParent(null);
 					}
 					
 					updateVertex(cur, curPrime);					
@@ -74,7 +81,7 @@ public class AStarTSP {
 		if (fringe.isEmpty()) { //finished going through cities
 			start.setParent(cur); //cur goes to start
 			cur = start;
-			endTime   = System.currentTimeMillis();
+			endTime = System.currentTimeMillis();
 			totalTime = endTime - startTime;
 			solution(start);
 		} else {
@@ -86,13 +93,14 @@ public class AStarTSP {
 	
 	public void updateVertex (MapNode s, MapNode sPrime) {
 		System.out.println("s: "+s.x+", "+s.y+" | sPrime: "+sPrime.x+", "+sPrime.y+" id is "+sPrime.id);
-		if (s.gVal + cityMap.edgeLengths[s.id][sPrime.id] < sPrime.gVal) { //
-			//sPrime.setG(s.gVal + cityMap.edgeLengths[s.id][sPrime.id]);
+		if (s.gVal + cityMap.edgeLengths[s.id][sPrime.id] < sPrime.gVal) { //basically if g was never generated
 			//sPrime.setG(g(s,sPrime));
-			//System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
-			//sPrime.setParent(s);
-			//System.out.println(s.id + " is the parent of "+sPrime.id);
-			if (fringe.contains(sPrime)) {
+			//sPrime.prevG = sPrime.gVal; //this will be subtracted from all nodes but the one expanded
+			sPrime.setG(g + cityMap.edgeLengths[s.id][sPrime.id]);
+			System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
+			sPrime.setParent(s);
+			System.out.println(s.id + " is the parent of "+sPrime.id);
+			if (fringe.contains(sPrime)) { //
 				fringeSet.remove(sPrime);
 				fringe.remove(sPrime);
 			}
@@ -101,10 +109,16 @@ public class AStarTSP {
 			fringe.add(sPrime);
 			fringeSet.add(sPrime);
 			System.out.println("Added "+sPrime.id+" to fringe; fVal is "+sPrime.fVal);
+		} else { //g seen before, remove prevG value
+			//sPrime.setG(g(s,sPrime) - sPrime.prevG);
+			//sPrime.prevG = cityMap.edgeLengths[s.id][sPrime.id]; //distance from s to sPrime will be removed when the path is not taken
+			sPrime.setG(g + cityMap.edgeLengths[s.id][sPrime.id]);
+			System.out.println(g + " (distance so far) + "+cityMap.edgeLengths[s.id][sPrime.id]+" (cost of path)");
+			System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
 		}
-		sPrime.setG(g(s,sPrime));
-		System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
+		fringe.remove(sPrime);
 		sPrime.setF(sPrime.gVal + h(sPrime));
+		fringe.add(sPrime);
 		sPrime.setParent(s);
 		System.out.println("Set "+sPrime.id+"'s fVal to "+sPrime.fVal);
 		System.out.println(s.id + " is the parent of "+sPrime.id);
@@ -135,11 +149,12 @@ public class AStarTSP {
 		
 		if(current.parent == start) {
 			System.out.println(current.id);
-			totalCost += cityMap.edgeLengths[current.id][start.id];
+			g += cityMap.edgeLengths[current.id][start.id];
+			//totalCost += cityMap.edgeLengths[current.id][start.id];
 			//System.out.println("Parent is start");
 		}
 		
-		System.out.println("Total cost of path: "+totalCost);
+		System.out.println("Total cost of path: "+g);
 		//grid[currentPoint.x][currentPoint.y].setSolution(true);
 		//grid[start.x][start.y].setSolution(true);
 		//System.out.println();
