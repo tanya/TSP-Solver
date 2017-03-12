@@ -71,6 +71,17 @@ public class MapNode implements Comparable<MapNode>{
 		return true;
 	}
 	
+	public boolean setF() {
+		try {
+			this.fVal = gVal + hVal;
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Could not set f value");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean setH(double h) {
 		try {
 			this.hVal = h;

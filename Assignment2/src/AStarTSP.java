@@ -20,17 +20,15 @@ public class AStarTSP {
 		start = cities[0];
 	}
 	
-	public void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public void run() {
 
+		long startTime = System.currentTimeMillis();
+		Runtime runtime = Runtime.getRuntime();
+		
 		start.setG(0);
-		
 		start.setH(h(start) + start.gVal);
-		
+		start.setF(start.gVal + start.hVal);
+
 		fringe.add(start);
 		fringeSet.add(start);
 		
@@ -66,23 +64,29 @@ public class AStarTSP {
 			}
 		}
 		
+		long endTime, totalTime = 0;
+		
 		if (fringe.isEmpty()) { //finished going through cities
 			start.setParent(cur); //cur goes to start
 			cur = start;
+			endTime   = System.currentTimeMillis();
+			totalTime = endTime - startTime;
 			solution(start);
 		} else {
 			System.out.println("No path found");
 		}
+		
+		System.out.println("Total time: "+totalTime);
 	}
 	
 	public void updateVertex (MapNode s, MapNode sPrime) {
 		System.out.println("s: "+s.x+", "+s.y+" | sPrime: "+sPrime.x+", "+sPrime.y+" id is "+sPrime.id);
 		if (s.gVal + cityMap.edgeLengths[s.id][sPrime.id] < sPrime.gVal) { //
 			//sPrime.setG(s.gVal + cityMap.edgeLengths[s.id][sPrime.id]);
-			sPrime.setG(g(s,sPrime));
-			System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
-			sPrime.setParent(s);
-			System.out.println(s.id + " is the parent of "+sPrime.id);
+			//sPrime.setG(g(s,sPrime));
+			//System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
+			//sPrime.setParent(s);
+			//System.out.println(s.id + " is the parent of "+sPrime.id);
 			if (fringe.contains(sPrime)) {
 				fringeSet.remove(sPrime);
 				fringe.remove(sPrime);
@@ -93,6 +97,8 @@ public class AStarTSP {
 			fringeSet.add(sPrime);
 			System.out.println("Added "+sPrime.id+" to fringe; fVal is "+sPrime.fVal);
 		}
+		sPrime.setG(g(s,sPrime));
+		System.out.println("set "+sPrime.id+"'s gVal to "+ sPrime.gVal);
 		sPrime.setF(s.gVal + h(sPrime));
 		sPrime.setParent(s);
 		System.out.println("Set "+sPrime.id+"'s fVal to "+sPrime.fVal);
