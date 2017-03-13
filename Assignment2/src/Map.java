@@ -9,7 +9,7 @@ public class Map {
 	MapNode start;
 	MapNode[] cities = new MapNode[100];
 			
-	public Map (int length, int width, String textfile) { //throws Exception {
+	public Map (int length, int width, String textfile) throws Exception {
 		
 		this.length = length;
 		this.width = width;
@@ -42,10 +42,10 @@ public class Map {
 						cityNum = Integer.parseInt(line);
 						//System.out.println("Number of cities: "+cityNum);
 					} else {	
-						System.out.println(line);
+						//System.out.println(line);
 						String[] ln = line.split(" ");
 						cID = Integer.parseInt(ln[0]);
-						System.out.println(cID);
+						//System.out.println(cID);
 						x = Integer.parseInt(ln[1]);
 						y = Integer.parseInt(ln[2]);
 						cities[cID].setLocation(x,y);

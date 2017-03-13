@@ -23,7 +23,7 @@ public class TravelingSalesman {
 		}
 		
 		Map cityMap = null;
-				
+		
 		try {
 			System.out.println("Enter a filename");
 			String file = scanner.nextLine();
